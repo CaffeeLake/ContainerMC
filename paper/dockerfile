@@ -1,0 +1,21 @@
+FROM container-registry.oracle.com/java/openjdk:19.0.2 as prod
+
+RUN dnf update -y --refresh \
+  && dnf install -y jq \
+  && dnf clean all -y
+
+ARG api=https://api.papermc.io \
+  && project=paper \
+  && version=1.19.3
+
+RUN build=$(curl -fsSL ${api}/v2/projects/${project}/versions/${version}/builds -H 'Accept: application/json' | jq '.builds [-1].build') \
+  && url=${api}/v2/projects/${project}/versions/${version}/builds/${build}/downloads/paper-${version}-${build}.jar \
+  && curl -fsSL ${url} -o /bin/paper.jar
+
+RUN mkdir -p /paper
+
+WORKDIR /paper
+
+COPY ./entrypoint.sh /bin/entrypoint.sh
+
+ENTRYPOINT ["sh", "/bin/entrypoint.sh"]

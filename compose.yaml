@@ -1,0 +1,67 @@
+services:
+  velocity:
+    build:
+      context: ./velocity
+      dockerfile: ./dockerfile
+      target: prod
+    deploy:
+      resources:
+        reservations:
+          cpus: '2'
+          memory: 3G
+        limits:
+          cpus: '2'
+          memory: 3G
+    environment:
+      - XMS=1G
+      - XMX=1G
+    ports:
+      - "25577:25577"
+    tty: true
+    volumes:
+      - ./volumes/velocity:/velocity
+
+  # waterfall:
+  #   build:
+  #     context: ./waterfall
+  #     dockerfile: ./dockerfile
+  #     target: prod
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         cpus: '1'
+  #         memory: 2.5G
+  #       limits:
+  #         cpus: '1'
+  #         memory: 2.5G
+  #   environment:
+  #     - XMS=512M
+  #     - XMX=512M
+  #   ports:
+  #     - "25577:25577"
+  #   tty: true
+  #   volumes:
+  #     - ./volumes/waterfall:/waterfall
+
+  paper:
+    build:
+      context: ./paper
+      dockerfile: ./dockerfile
+      target: prod
+    deploy:
+      resources:
+        reservations:
+          cpus: '6'
+          memory: 12G
+        limits:
+          cpus: '6'
+          memory: 12G
+    environment:
+      - XMS=10G
+      - XMX=10G
+    ports:
+      - "25565:25565"
+      - "25575:25575"
+    tty: true
+    volumes:
+      - ./volumes/paper:/paper

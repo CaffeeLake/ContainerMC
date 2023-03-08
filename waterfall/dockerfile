@@ -1,0 +1,21 @@
+FROM container-registry.oracle.com/java/openjdk:19.0.2 as prod
+
+RUN dnf update -y --refresh \
+  && dnf install -y jq \
+  && dnf clean all -y
+
+ARG api=https://api.papermc.io \
+  && project=waterfall \
+  && version=1.19
+
+RUN build=$(curl -fsSL ${api}/v2/projects/${project}/versions/${version}/builds -H 'Accept: application/json' | jq '.builds [-1].build') \
+  && url=${api}/v2/projects/${project}/versions/${version}/builds/${build}/downloads/waterfall-${version}-${build}.jar\
+  && curl -fsSL ${url} -o /bin/waterfall.jar
+
+RUN mkdir -p /waterfall
+
+WORKDIR /waterfall
+
+COPY ./entrypoint.sh /bin/entrypoint.sh
+
+ENTRYPOINT ["sh", "/bin/entrypoint.sh"]
