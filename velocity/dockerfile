@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/java/openjdk:19.0.2 as prod
+FROM container-registry.oracle.com/java/openjdk:20 as prod
 
 RUN dnf update -y --refresh \
   && dnf install -y jq \
