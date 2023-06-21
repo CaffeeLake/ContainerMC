@@ -6,7 +6,7 @@ RUN dnf update -y --refresh \
 
 ARG api=https://api.papermc.io \
   && project=waterfall \
-  && version=1.19
+  && version=1.20
 
 RUN build=$(curl -fsSL ${api}/v2/projects/${project}/versions/${version}/builds -H 'Accept: application/json' | jq '.builds [-1].build') \
   && url=${api}/v2/projects/${project}/versions/${version}/builds/${build}/downloads/waterfall-${version}-${build}.jar\
