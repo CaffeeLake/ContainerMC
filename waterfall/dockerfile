@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/java/openjdk:22 as prod
+FROM container-registry.oracle.com/java/openjdk:23 as prod
 
 RUN dnf update -y --refresh \
   && dnf install -y jq \
