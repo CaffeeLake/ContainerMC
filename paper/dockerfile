@@ -6,7 +6,7 @@ RUN dnf update -y --refresh \
 
 ARG api=https://api.papermc.io \
   && project=paper \
-  && version=1.20.6
+  && version=1.21.1
 
 RUN build=$(curl -fsSL ${api}/v2/projects/${project}/versions/${version}/builds -H 'Accept: application/json' | jq '.builds [-1].build') \
   && url=${api}/v2/projects/${project}/versions/${version}/builds/${build}/downloads/paper-${version}-${build}.jar \
